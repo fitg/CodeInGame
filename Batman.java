@@ -15,9 +15,12 @@ class Player {
         int N = in.nextInt(); // maximum number of turns before game over.
         int X0 = in.nextInt();
         int Y0 = in.nextInt();
+        int X1 = X0;
+        int Y1 = Y0;
         int[] mid = {W/2,H/2};
         int i = 0;
         int[] cur = {0,0};
+        int iterator = 1;
 
         // game loop
         while (true) {
@@ -25,40 +28,69 @@ class Player {
             // Write an action using System.out.println()
             System.err.println(bombDir);
             
-            if(i == 0)
-            {
+            if (H*W < 30) {
+                iterator = 1;
+            } else {
+                iterator = H/2;
+            }
+            
+            System.err.println( iterator);
+            if(i == 0) {
+                
                 cur[0] = mid[0];
                 cur[1] = mid[1];
+                H = cur[1];
+                W = cur[0];
             }
             else {
                 switch (bombDir) {
-                case "U":  
-                    cur[1]--;
+                case "U": 
+                    
+                    cur[1]-=iterator;
+                    H = cur[1];
                     break;
                 case "UR":
-                    cur[0]++;
-                    cur[1]--;
+                    
+                    cur[0]+=iterator;
+                    cur[1]-=iterator;
+                    H = cur[1];
+                    W = cur[0];
                     break;
                 case "R":
-                    cur[1]++;
+                    
+                    cur[0]+=iterator;
+                    W = cur[0];
                     break;
                 case "DR":
-                    cur[0]++;
-                    cur[1]++;
+                    
+                    cur[0]+=iterator;
+                    cur[1]+=iterator;
+                    W = cur[0];
+                    H = H - cur[1];
                     break;
                 case "D":
-                    cur[1]++;
+                    
+                    cur[1]+=iterator;
+                    H = H - cur[1];
                     break;
                 case "DL":
-                    cur[0]--;
-                    cur[1]--;
+                    
+                    cur[0]-=iterator;
+                    cur[1]-=iterator;
+                    H = H - cur[1];
+                    W = W - cur[0];
                     break;
                 case "L":
-                    cur[1]--;
+                    
+                    cur[0]-=iterator;
+                    W = W - cur[0];
                     break;
                 case "UL":
-                    cur[0]--;
-                    cur[1]--;
+                    
+                    cur[0]-=iterator;
+                    cur[1]-=iterator;
+                    W = W - cur[0];
+                    H = cur[1];
                     break;
                 default: 
                     cur[0] = mid[0];
