@@ -20,7 +20,6 @@ class Solution {
         int speedlimit = speed;
         int speedms = METER*speed/SECONDS;
         int lightCount = in.nextInt();
-        boolean fail = false;
         Map<Integer, Integer> lightMap = new HashMap<>();
         System.err.println("Speed: " + speed);
         for (int i = 0; i < lightCount; i++) {
@@ -29,32 +28,25 @@ class Solution {
             lightMap.put(distance, duration);
         }
         
-        for(int i = speedlimit; i > 0; i--) {
+        Iterator lightIterator = lightMap.entrySet().iterator();
             
-            speedms = METER*roundUp(i,SECONDS);
-            fail = false;
+        while (lightIterator.hasNext()) { 
+            Map.Entry light = (Map.Entry)lightIterator.next(); 
+            int distance = ((int)light.getKey()); 
+            int duration = ((int)light.getValue());
             
-            Iterator lightIterator = lightMap.entrySet().iterator();
+            System.err.println("Speed: ["+ speed + "]");
+            System.err.println("Distance: " + distance);
+            System.err.println("Duration: " + duration);
+            System.err.println("Speedms: " + speedms);
+            System.err.println("Lightspeed: " + distance/duration);
+            System.err.println("Modulo: " + (distance/duration)%speedms);
             
-            while (lightIterator.hasNext()) { 
-                Map.Entry light = (Map.Entry)lightIterator.next(); 
-                int distance = ((int)light.getKey()); 
-                int duration = ((int)light.getValue());
-                System.err.println("Speed: ["+ i + "]");
-                System.err.println("Distance: " + distance);
-                System.err.println("Duration: " + duration);
-                System.err.println("Speedms: " + speedms);
-                System.err.println("Lightspeed: " + distance/duration);
-                System.err.println("Modulo: " + (distance/duration)%speedms);
-                if(((distance/duration)%speedms != 0) && ((distance/duration)%speedms) < 10) {
-                    fail = true;
-                    System.err.println("setting to error");
-                }
-            }
-            System.err.println("Fail state: " + fail);
-            if (fail == false) {
-                speed = i;
-                break;
+            if((SECONDS * distance) % (2 * METER * speed * duration) >= (METER * speed * duration)){
+                    speed--;
+                    speedms = METER*roundUp(speed,SECONDS);
+                    lightIterator = lightMap.entrySet().iterator();
+                    System.err.println("starting over");
             }
         }
         
